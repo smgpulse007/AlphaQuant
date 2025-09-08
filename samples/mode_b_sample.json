@@ -1,0 +1,27 @@
+{
+  "meta": {"started_at": "2025-09-07T01:30:00-07:00", "completed_at": "2025-09-07T01:31:10-07:00", "warnings": []},
+  "regime": {"tag": "Range", "notes": "Stub regime classifier"},
+  "market_scan": {
+    "macro": {"facts": ["CPI latest reading placeholder"], "citations": [{"url": "https://fred.stlouisfed.org/series/CPIAUCSL"}]},
+    "cross_asset": {"facts": ["Cross-asset correlations stable (placeholder)"], "citations": [{"url": "https://stooq.com"}, {"url": "https://finance.yahoo.com"}]},
+    "sectors": {"facts": ["Tech leadership persists (placeholder)"], "citations": [{"url": "https://www.spglobal.com"}, {"url": "https://www.ssga.com/us/en/individual/etfs"}]},
+    "technicals": {"facts": ["Index above 50/200DMA (placeholder)"], "citations": [{"url": "https://www.tradingview.com"}, {"url": "https://finance.yahoo.com"}]},
+    "flows": {"facts": ["Options OI up in mega-cap tech (placeholder)"], "citations": [{"url": "https://www.cboe.com"}, {"url": "https://www.theocc.com"}]},
+    "politicians": {"highlights": ["Recent disclosed buys in semiconductors (placeholder)"], "contradictions": []},
+    "event_map": []
+  },
+  "trades": [
+    {
+      "ticker": "MSFT", "direction": "Call", "strategy": "Diagonal",
+      "expiry": "2026-01-16", "strikes": [550, 620], "cost": 980,
+      "delta": 0.32, "pop": 0.71, "confidence": 78,
+      "thesis": "AI infra leadership; favorable macro regime (placeholder)",
+      "key_levels": {"support": 402, "resistance": 435},
+      "catalysts": ["10-Q 2025-10-25"],
+      "hedge_alt": "Put spread on QQQ", "why_now": "Momentum with improving flows (placeholder)",
+      "citations": [ {"url": "https://fred.stlouisfed.org/series/CPIAUCSL"}, {"url": "https://finance.yahoo.com/quote/MSFT"} ]
+    }
+  ],
+  "audit": {"double_source": true, "all_timestamps_pt": true}
+}
+

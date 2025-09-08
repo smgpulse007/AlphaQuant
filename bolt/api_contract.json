@@ -1,0 +1,22 @@
+{
+  "components": {
+    "market_scan": {
+      "sections": ["macro", "cross_asset", "sectors", "technicals", "flows", "politicians"],
+      "fields": ["facts", "citations", "highlights", "contradictions", "event_map"]
+    },
+    "trade_table": {
+      "columns": [
+        "ticker",
+        "direction",
+        "strategy",
+        "expiry",
+        "strikes",
+        "cost",
+        "delta",
+        "pop",
+        "confidence"
+      ]
+    }
+  }
+}
+

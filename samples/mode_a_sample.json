@@ -1,0 +1,27 @@
+{
+  "meta": {"started_at": "2025-09-07T02:00:00-07:00", "completed_at": "2025-09-07T02:01:05-07:00", "warnings": []},
+  "regime": {"tag": "Range", "notes": "Stub regime classifier"},
+  "market_scan": {
+    "macro": {"facts": ["CPI latest reading placeholder"], "citations": [{"url": "https://fred.stlouisfed.org/series/CPIAUCSL"}]},
+    "cross_asset": {"facts": ["Cross-asset correlations stable (placeholder)"], "citations": [{"url": "https://stooq.com"}, {"url": "https://finance.yahoo.com"}]},
+    "sectors": {"facts": ["Tech leadership persists (placeholder)"], "citations": [{"url": "https://www.spglobal.com"}, {"url": "https://www.ssga.com/us/en/individual/etfs"}]},
+    "technicals": {"facts": ["Index above 50/200DMA (placeholder)"], "citations": [{"url": "https://www.tradingview.com"}, {"url": "https://finance.yahoo.com"}]},
+    "flows": {"facts": ["Options OI up in mega-cap tech (placeholder)"], "citations": [{"url": "https://www.cboe.com"}, {"url": "https://www.theocc.com"}]},
+    "politicians": {"highlights": ["Recent disclosed buys in semiconductors (placeholder)"], "contradictions": []},
+    "event_map": []
+  },
+  "trades": [
+    {
+      "ticker": "QQQ", "direction": "Put", "strategy": "Vertical",
+      "expiry": "2025-12-19", "strikes": [390, 360], "cost": 210,
+      "delta": -0.28, "pop": 0.62, "confidence": 66,
+      "thesis": "Hedge concentrated tech exposure (placeholder)",
+      "key_levels": {"support": 430, "resistance": 455},
+      "catalysts": ["CPI print next week"],
+      "hedge_alt": "Short ES micro futures", "why_now": "IV reasonable (placeholder)",
+      "citations": [ {"url": "https://www.cboe.com"}, {"url": "https://finance.yahoo.com/quote/QQQ"} ]
+    }
+  ],
+  "audit": {"double_source": true, "all_timestamps_pt": true}
+}
+
