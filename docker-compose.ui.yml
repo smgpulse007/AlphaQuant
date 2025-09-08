@@ -1,15 +1,15 @@
 services:
   ui:
     build:
-      context: ./frontend
-      dockerfile: ../docker/ui.Dockerfile
+      context: .
+      dockerfile: docker/ui.Dockerfile
       args:
-        - API_BASE_URL=http://api:8000
+        - API_BASE_URL=/api
+        - FRONTEND_DIR=frontend
     environment:
-      - API_BASE_URL=http://api:8000
-      - VITE_API_BASE_URL=http://api:8000
-      - NEXT_PUBLIC_API_BASE_URL=http://api:8000
+      - API_BASE_URL=/api
+      - VITE_API_BASE_URL=/api
+      - NEXT_PUBLIC_API_BASE_URL=/api
     depends_on: [api]
     ports: ["8080:80"]
     # If you need to serve under /, leave as-is. If you want /app, adjust nginx config.
-
