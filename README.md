@@ -8,16 +8,20 @@ Local-first, Docker-first agentic research stack that ingests macro, cross-asset
 
 Demo assets
 
+![Terminal setup demo](artifacts/terminal-demo.gif)
+
 ![UI demo GIF](artifacts/ui-demo.gif)
 
 ![UI screenshot](artifacts/ui-screenshot.png)
 
-The GIF is generated from 18 frames for smoother motion. Re-render it with `python scripts/generate_ui_gif.py` after starting the frontend on `http://127.0.0.1:5173/`.
+The terminal preview above is a GitHub-renderable GIF generated from the local setup flow. The VHS tape sources are still available in [artifacts/quick-setup.tape](artifacts/quick-setup.tape) and [artifacts/setup-demo.tape](artifacts/setup-demo.tape).
+
+The UI GIF is generated from 18 frames for smoother motion. Re-render it with `python scripts/generate_ui_gif.py` after starting the frontend on `http://127.0.0.1:5173/`.
 
 Terminal demo tape
-- VHS tape: [artifacts/quick-setup.tape](artifacts/quick-setup.tape)
-- Longer setup tape: [artifacts/setup-demo.tape](artifacts/setup-demo.tape)
-- On Windows, render the terminal demo with `C:\Users\shail\go\bin\vhs.exe artifacts/quick-setup.tape` after adding the Playwright Chromium binary to `PATH`.
+- VHS tape source: [artifacts/quick-setup.tape](artifacts/quick-setup.tape)
+- Longer setup tape source: [artifacts/setup-demo.tape](artifacts/setup-demo.tape)
+- On Windows, the raw VHS render path is `C:\Users\shail\go\bin\vhs.exe artifacts/quick-setup.tape` after adding the Playwright Chromium binary to `PATH`.
 
 Quick start
 - Copy env: `cp .env.example .env` and fill keys (or use SCRAPE_ONLY=true semantics later).
