@@ -21,6 +21,9 @@ build/
 .idea/
 .vscode/
 
+# Browser automation output
+.playwright-mcp/
+
 # Virtualenvs
 .venv/
 venv/
