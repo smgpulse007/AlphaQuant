@@ -1,59 +1,81 @@
 # Agentic Alpha Engine (AlphaQuant)
 
-Local-first, Docker-first agentic research stack that ingests macro, cross-asset, options, and politician/government trades, then outputs Rev-4 “Fusion” reports with double-sourced facts, timestamps (PT), POP scores, roll/repair logic, and trade tables.
+A local-first, Docker-first research stack for building structured market and macro intelligence from public data, agent workflows, and lightweight model inference.
 
-**TL;DR:** Local-first agentic research engine that chains LLM agents over market, flow, and politician-trade data to produce structured “Fusion” reports. Inspired by systematic research workflows used to surface high-conviction trades without relying on cloud LLMs.
+## Why this project exists
 
-**Tech stack:** Python, FastAPI, LangGraph-style agents, Postgres, Redis, Qdrant, MinIO, OpenSearch, Ollama, Docker
+AlphaQuant is designed to help researchers and developers prototype an end-to-end alpha workflow without depending on cloud-only tooling:
 
-Demo assets
+- ingest and normalize macro, cross-asset, options, and politician-trade signals;
+- run agentic analysis over those signals with a clear orchestration layer;
+- export structured “Fusion” reports that can be reviewed, tested, and iterated locally.
 
-![Terminal setup demo](artifacts/terminal-demo.gif)
+This repo is intentionally local-first: the core path is reproducible on a developer laptop, and the compose stack makes it easy to run the API and supporting services together.
+
+## Demo assets
+
+![Terminal setup preview](artifacts/terminal-demo.gif)
 
 ![UI demo GIF](artifacts/ui-demo.gif)
 
 ![UI screenshot](artifacts/ui-screenshot.png)
 
-The terminal preview above is a GitHub-renderable GIF generated from the local setup flow. The VHS tape sources are still available in [artifacts/quick-setup.tape](artifacts/quick-setup.tape) and [artifacts/setup-demo.tape](artifacts/setup-demo.tape).
+The terminal preview above shows the setup flow in sequence. The raw VHS source files are also available in [artifacts/quick-setup.tape](artifacts/quick-setup.tape) and [artifacts/setup-demo.tape](artifacts/setup-demo.tape).
 
-The UI GIF is generated from 18 frames for smoother motion. Re-render it with `python scripts/generate_ui_gif.py` after starting the frontend on `http://127.0.0.1:5173/`.
+## What is included
 
-Terminal demo tape
-- VHS tape source: [artifacts/quick-setup.tape](artifacts/quick-setup.tape)
-- Longer setup tape source: [artifacts/setup-demo.tape](artifacts/setup-demo.tape)
-- On Windows, the raw VHS render path is `C:\Users\shail\go\bin\vhs.exe artifacts/quick-setup.tape` after adding the Playwright Chromium binary to `PATH`.
+- FastAPI API and worker entry points under [src/api](src/api)
+- Agent orchestration and state logic under [src/agents](src/agents) and [src/orchestrator](src/orchestrator)
+- Storage and retrieval helpers under [src/storage](src/storage)
+- Small-world demo runner under [scripts/run_small_world.py](scripts/run_small_world.py)
+- Frontend integration notes under [frontend](frontend)
 
-Quick start
-- Copy env: `cp .env.example .env` and fill keys (or use SCRAPE_ONLY=true semantics later).
-- Build: `docker compose up -d --build`
-- Pull models (first run): `docker exec -it ollama ollama pull llama3.1:8b mxbai-embed-large deepseek-r1:7b`
-- Call API: `POST http://localhost:8000/run` with sample payloads in `samples/`.
+## Quick start
 
-Structure
-- FastAPI orchestrator with LangGraph-style flow (stubbed here).
-- Agents for discovery → crawl → normalize → entities → macro → cross-asset → sectors → technicals → flows → politicians → synthesis → verify.
-- Storage: Postgres, Redis, Qdrant, MinIO, OpenSearch (compose includes services).
-- Local models: Ollama (compose service) and embeddings (to be pulled at runtime).
+1. Copy the environment template and add your local values.
+   - `cp .env.example .env`
+2. Start the local stack.
+   - `docker compose up -d --build`
+3. Pull the required local models once.
+   - `docker exec -it ollama ollama pull llama3.1:8b mxbai-embed-large deepseek-r1:7b`
+4. Run the API and try the sample payloads in [samples](samples).
+   - `POST http://localhost:8000/run`
 
-Small-world test
-- Run `python scripts/run_small_world.py` to exercise a minimal pipeline (no paid APIs), and print a Rev-4 style JSON.
+## Local development
 
-Frontend integration (separate repo)
-- Repo example: `https://github.com/smgpulse007/AlphaQuantFrontEnd.git`
-- Option A (fastest dev): run the frontend locally and point it at the API
-  - Set `VITE_API_BASE_URL=http://localhost:8000` (or `NEXT_PUBLIC_API_BASE_URL` for Next.js)
-  - Start your dev server (`npm run dev` or equivalent)
-- Option B (Compose, static SPA)
-  - Clone the frontend into `frontend/` at repo root: `git clone <your-frontend-repo> frontend`
-  - Or add as submodule: `git submodule add <your-frontend-repo> frontend`
-  - Build both: `docker compose -f docker-compose.yml -f docker-compose.ui.yml up -d --build`
-  - Open UI at `http://localhost:8080` (UI calls API at `http://api:8000` on the compose network)
-  - Adjust Dockerfile if the frontend is SSR (Next.js) instead of SPA; provided Dockerfile targets Vite/React SPA by default.
+### Python
 
-Notes for UI Dockerfile
-- `docker/ui.Dockerfile` expects the frontend to produce `dist/` via `npm run build`.
-- If your UI is Next.js SSR, use a Node runtime instead of Nginx and run `npm run start` after `npm run build`.
+- `python -m pip install -r requirements.api.txt`
+- `python -m pip install -r requirements.worker.txt`
 
-Notes
-- All timestamps in PT. Double-source rule enforced in verifier stub (warnings for missing corroboration).
-- Replace stubs incrementally; see TODOs in each agent/tool.
+### Frontend
+
+- `cd frontend`
+- `npm install`
+- `npm run dev -- --host 127.0.0.1 --port 5173`
+
+### Small-world test
+
+- `python scripts/run_small_world.py`
+
+## Architecture at a glance
+
+- API layer: FastAPI routes and worker entry points
+- Orchestration: LangGraph-style state and graph planning helpers
+- Agents: discovery, crawler, normalization, entities, macro, cross-asset, sectors, technicals, flows, politicians, synthesis, verification
+- Storage: Postgres, Redis, Qdrant, MinIO, OpenSearch
+- Local models: Ollama + embeddings for offline-friendly experimentation
+
+## Notes for contributors
+
+- All timestamps are recorded in PT.
+- The verifier includes a double-source rule and warnings for missing corroboration.
+- The workflow is intentionally modular so each agent/tool can be upgraded incrementally.
+
+## Contributing
+
+Contributions are welcome. Please open an issue first for larger changes, then submit a pull request with a clear summary and test evidence.
+
+## License
+
+This project is released under the MIT License. See [LICENSE](LICENSE) for details.
