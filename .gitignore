@@ -23,6 +23,8 @@ build/
 
 # Browser automation output
 .playwright-mcp/
+artifacts/frame_*.png
+artifacts/playwright-test.png
 
 # Virtualenvs
 .venv/
