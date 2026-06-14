@@ -7,9 +7,12 @@ Local-first, Docker-first agentic research stack that ingests macro, cross-asset
 **Tech stack:** Python, FastAPI, LangGraph-style agents, Postgres, Redis, Qdrant, MinIO, OpenSearch, Ollama, Docker
 
 Demo assets
-- UI screenshot: [artifacts/ui-screenshot.png](artifacts/ui-screenshot.png)
-- UI demo GIF: [artifacts/ui-demo.gif](artifacts/ui-demo.gif)
-- Refresh the GIF with: `python scripts/generate_ui_gif.py` (start the frontend on `http://127.0.0.1:5173/` first)
+
+![UI screenshot](artifacts/ui-screenshot.png)
+
+![UI demo GIF](artifacts/ui-demo.gif)
+
+Refresh the GIF with: `python scripts/generate_ui_gif.py` (start the frontend on `http://127.0.0.1:5173/` first)
 
 Quick start
 - Copy env: `cp .env.example .env` and fill keys (or use SCRAPE_ONLY=true semantics later).
