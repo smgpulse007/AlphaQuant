@@ -1,6 +1,10 @@
-Agentic Alpha Engine (AlphaQuant)
+# Agentic Alpha Engine (AlphaQuant)
 
 Local-first, Docker-first agentic research stack that ingests macro, cross-asset, options, and politician/government trades, then outputs Rev-4 “Fusion” reports with double-sourced facts, timestamps (PT), POP scores, roll/repair logic, and trade tables.
+
+**TL;DR:** Local-first agentic research engine that chains LLM agents over market, flow, and politician-trade data to produce structured “Fusion” reports. Inspired by systematic research workflows used to surface high-conviction trades without relying on cloud LLMs.
+
+**Tech stack:** Python, FastAPI, LangGraph-style agents, Postgres, Redis, Qdrant, MinIO, OpenSearch, Ollama, Docker
 
 Quick start
 - Copy env: `cp .env.example .env` and fill keys (or use SCRAPE_ONLY=true semantics later).
