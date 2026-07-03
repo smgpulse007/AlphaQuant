@@ -2,6 +2,12 @@
 
 A local-first, Docker-first research stack for building structured market and macro intelligence from public data, agent workflows, and lightweight model inference.
 
+> Research/engineering demo only. Not financial advice, not an investment product, and not intended for live trading.
+
+## Portfolio relevance
+
+Demonstrates local-first agent orchestration, stateful workflows, retrieval/storage architecture, verification rules, and structured synthesis across a multi-service FastAPI, Docker, Postgres, Redis, Qdrant, MinIO, OpenSearch, and Ollama stack.
+
 ## Why this project exists
 
 AlphaQuant is designed to help researchers and developers prototype an end-to-end alpha workflow without depending on cloud-only tooling:
@@ -28,7 +34,7 @@ The terminal preview above shows the setup flow in sequence. The raw VHS source 
 - Agent orchestration and state logic under [src/agents](src/agents) and [src/orchestrator](src/orchestrator)
 - Storage and retrieval helpers under [src/storage](src/storage)
 - Small-world demo runner under [scripts/run_small_world.py](scripts/run_small_world.py)
-- Frontend integration notes under [frontend](frontend)
+- Frontend/API integration contract under [bolt/api_contract.json](bolt/api_contract.json)
 
 ## Quick start
 
