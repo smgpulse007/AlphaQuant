@@ -1,0 +1,13 @@
+{
+  "recorded_utc": "2026-11-14T05:58:24.395216+00:00",
+  "method": "Animation rendered from actual command output",
+  "command": "python -m scripts.evidence_demo",
+  "exit_code": 0,
+  "output": "AlphaQuant / synthetic citation-coverage walkthrough\nNo source retrieval, model inference, or trading.\n\nTwo URLs, same hostname: FAIL\n  distinct hosts: 1; source content verified: false\nTwo distinct hostnames: PASS\n  distinct hosts: 2; source content verified: false\nMissing citations: FAIL\n  distinct hosts: 0; source content verified: false\nEmpty report: FAIL (no claims to check)\n\nPASS means citation coverage only; it does not establish truth.\n",
+  "source_hash_format": "UTF-8 bytes with CRLF normalized to LF, matching Git blobs",
+  "source_sha256": {
+    "src/orchestrator/verifier.py": "99106da69a5de1453bfc4fa4b916b59e23f9d59593cdf0139260c39c06600f58",
+    "scripts/evidence_demo.py": "aab728e3ce2b9d41782475bb90b062381d30d1efb7d40cb92bd5ef336637ba44"
+  },
+  "gif_sha256": "98a70b7811c74b9f24fcdee4225831dad1c6042a51b20366d7f533dad080e732"
+}
