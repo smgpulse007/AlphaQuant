@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 def run(state: Dict[str, Any]) -> Dict[str, Any]:
     # TODO: fetch macro series (FRED/Treasury) and compute curves/breakevens
-    now = datetime.now(timezone.utc).astimezone().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     state.setdefault("analysis", {})["macro"] = {
         "facts": [f"CPI latest reading placeholder @ {now}"],
         "citations": [

@@ -37,11 +37,12 @@ class AppGraph:
     def run(self, req: Dict[str, Any]) -> Dict[str, Any]:
         state: Dict[str, Any] = {
             "input": req,
-            "meta": {"started_at": datetime.now(timezone.utc).astimezone().isoformat(), "warnings": []},
+            "meta": {"started_at": datetime.now(timezone.utc).isoformat(), "warnings": [],
+                     "synthetic": True, "execution": "fixture_pipeline", "timestamp_zone": "UTC"},
         }
         for name, fn in self.pipeline:
             state = fn(state)
-        state["meta"]["completed_at"] = datetime.now(timezone.utc).astimezone().isoformat()
+        state["meta"]["completed_at"] = datetime.now(timezone.utc).isoformat()
         # Ensure output meta reflects completed_at
         if isinstance(state.get("output"), dict):
             out = state["output"]

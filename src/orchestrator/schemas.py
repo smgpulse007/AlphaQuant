@@ -48,6 +48,7 @@ class MarketScanSection(BaseModel):
 class PoliticiansSection(BaseModel):
     highlights: List[str] = []
     contradictions: List[str] = []
+    citations: Optional[List[Citation]] = None
 
 
 class MarketScan(BaseModel):
@@ -67,13 +68,20 @@ class Regime(BaseModel):
 
 class Audit(BaseModel):
     double_source: bool = False
-    all_timestamps_pt: bool = True
+    all_timestamps_pt: bool = False
+    coverage_policy: str = "two_distinct_http_hosts_per_claim_item"
+    citation_coverage: List[Dict[str, Any]] = Field(default_factory=list)
+    source_content_verified: bool = False
+    warnings: List[str] = Field(default_factory=list)
 
 
 class Meta(BaseModel):
     started_at: str
     completed_at: Optional[str] = None
     warnings: List[str] = []
+    synthetic: bool = False
+    execution: str = "unknown"
+    timestamp_zone: Optional[str] = None
 
 
 class RunOutput(BaseModel):

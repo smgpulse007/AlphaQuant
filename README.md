@@ -1,87 +1,78 @@
-# Agentic Alpha Engine (AlphaQuant)
+# AlphaQuant — inspect a research report's evidence
 
-A local-first, Docker-first research stack for building structured market and macro intelligence from public data, agent workflows, and lightweight model inference.
+[![Offline evidence checks](https://github.com/smgpulse007/AlphaQuant/actions/workflows/evidence.yml/badge.svg)](https://github.com/smgpulse007/AlphaQuant/actions/workflows/evidence.yml)
 
-> Research/engineering demo only. Not financial advice, not an investment product, and not intended for live trading.
+**Check citation coverage before a research report moves downstream.** Catch reports that cite the same host twice, omit citations from a claim-bearing section, or quietly pass an empty result. Run the dependency-free checker offline, inspect the findings, and use its exit status in your own evaluation loop.
 
-## Portfolio relevance
+![Actual terminal walkthrough: repeated-host, distinct-host, missing-citation, and empty-report checks](artifacts/evidence-demo.gif)
 
-Demonstrates local-first agent orchestration, stateful workflows, retrieval/storage architecture, verification rules, and structured synthesis across a multi-service FastAPI, Docker, Postgres, Redis, Qdrant, MinIO, OpenSearch, and Ollama stack.
+The recording comes from the real command below, using fictional `.example` URLs. [Output and source hashes](artifacts/evidence-demo.json).
 
-## Why this project exists
+## Try it in a minute
 
-AlphaQuant is designed to help researchers and developers prototype an end-to-end alpha workflow without depending on cloud-only tooling:
+Python 3.11 or newer is enough for the checker and fixture pipeline. No package install, Docker service, API key, model download, or network access is required.
 
-- ingest and normalize macro, cross-asset, options, and politician-trade signals;
-- run agentic analysis over those signals with a clear orchestration layer;
-- export structured “Fusion” reports that can be reviewed, tested, and iterated locally.
+```sh
+git clone https://github.com/smgpulse007/AlphaQuant.git
+cd AlphaQuant
+python -m scripts.evidence_demo
+python -m unittest discover -s tests -v
+```
 
-This repo is intentionally local-first: the core path is reproducible on a developer laptop, and the compose stack makes it easy to run the API and supporting services together.
+The walkthrough deliberately shows both passing and failing cases. A pass means two distinct, syntactically valid HTTP(S) citation hostnames for each checked item. It does **not** mean that the sources were retrieved, are independent publishers, support the claim, or make it true.
 
-## Demo assets
+## Check your own structured report
 
-![Terminal setup preview](artifacts/terminal-demo.gif)
+Save this as `report.json`:
 
-![UI demo GIF](artifacts/ui-demo.gif)
+```json
+{
+  "market_scan": {
+    "macro": {
+      "facts": ["A synthetic claim for demonstrating the format."],
+      "citations": [
+        {"url": "https://one.example/source"},
+        {"url": "https://two.example/source"}
+      ]
+    }
+  },
+  "trades": []
+}
+```
 
-![UI screenshot](artifacts/ui-screenshot.png)
+```sh
+python -m scripts.verify_report report.json
+```
 
-The terminal preview above shows the setup flow in sequence. The raw VHS source files are also available in [artifacts/quick-setup.tape](artifacts/quick-setup.tape) and [artifacts/setup-demo.tape](artifacts/setup-demo.tape).
+Exit codes: **0** meets coverage policy, **1** fails coverage, **2** is unreadable, oversized, or invalid input. The command reads at most 1 MiB and prints an audit; it never fetches citation URLs or writes the input file. Import `audit_report` from `src.orchestrator.verifier` to embed the same check in Python.
 
-## What is included
+Claim sections use `facts`, `highlights`, or `contradictions` arrays of nonempty strings, plus a `citations` array. Unsupported claim fields are rejected instead of silently ignored. Every trade object is checked. Nonempty event lists without structured citations fail coverage. Case, a leading `www.`, trailing DNS dots, paths, fragments and ports do not create extra hosts. This is hostname counting, not publisher attribution or fact checking.
 
-- FastAPI API and worker entry points under [src/api](src/api)
-- Agent orchestration and state logic under [src/agents](src/agents) and [src/orchestrator](src/orchestrator)
-- Storage and retrieval helpers under [src/storage](src/storage)
-- Small-world demo runner under [scripts/run_small_world.py](scripts/run_small_world.py)
-- Frontend/API integration contract under [bolt/api_contract.json](bolt/api_contract.json)
+The legacy `audit.double_source` field represents this coverage policy. `source_content_verified` is always false because this checker does not retrieve or inspect sources. Per-item counts and warnings explain the outcome.
 
-## Quick start
+Coverage checking validates the citation-bearing report shape, not the full [API response schema](src/orchestrator/schemas.py). A trade still needs its required API fields when used with `RunOutput`. Duplicate JSON keys, non-finite constants, and excessive nesting are rejected by the CLI.
 
-1. Copy the environment template and add your local values.
-   - `cp .env.example .env`
-2. Start the local stack.
-   - `docker compose up -d --build`
-3. Pull the required local models once.
-   - `docker exec -it ollama ollama pull llama3.1:8b mxbai-embed-large deepseek-r1:7b`
-4. Run the API and try the sample payloads in [samples](samples).
-   - `POST http://localhost:8000/run`
+## Explore the existing pipeline
 
-## Local development
+```sh
+python -m scripts.run_small_world --summary
+python -m scripts.run_small_world
+```
 
-### Python
+Run these module commands from the repository root. The sequential Python pipeline passes state through discovery, crawling, normalization, analysis, synthesis, and verification stages. **Its data adapters, analysis and trade proposals are placeholders.** It does not call an LLM, retrieve live market data, or place trades. Fixed scores, confidence values, option parameters and dated sample outputs are illustrative, not calibrated predictions or actionable recommendations.
 
-- `python -m pip install -r requirements.api.txt`
-- `python -m pip install -r requirements.worker.txt`
+Outputs identify `synthetic: true`, `execution: fixture_pipeline`, and UTC-generated timestamps. The current politician highlight has no citations, so the fixture pipeline correctly reports failed coverage. The warning identifies exactly which section needs evidence.
 
-### Frontend
+The broader [FastAPI routes](src/api), [Compose stack](docker-compose.yml), [storage adapters](src/storage), and [frontend contract](bolt/api_contract.json) are retained for further development. Several endpoints and storage methods return fixtures or remain TODOs. Their older dependency sets and complete multi-service runtime are outside the tested offline path.
 
-- `cd frontend`
-- `npm install`
-- `npm run dev -- --host 127.0.0.1 --port 5173`
+The public tree contains no `frontend` source directory; `docker-compose.ui.yml` therefore cannot build its referenced UI from this checkout alone. Historical [UI image](artifacts/ui-screenshot.png), [UI recording](artifacts/ui-demo.gif), and [setup tapes](artifacts/quick-setup.tape) are retained as context, not a reproducible public UI quickstart.
 
-### Small-world test
+## Develop and verify
 
-- `python scripts/run_small_world.py`
+CI runs the standard-library tests and both module walkthroughs on Windows/Linux with Python 3.11/3.13. Tests cover repeated hosts, malformed URLs and report shapes, missing sections, empty reports, repeat verification, CLI exit codes, UTC output, and a network-blocked fixture pipeline. They do not establish model quality, source correctness, investment performance, or the full Compose deployment.
 
-## Architecture at a glance
+To regenerate the terminal GIF, install Pillow in your development environment and run `python scripts/record_evidence_demo.py`. It executes the real walkthrough and records its output and canonical source hashes.
 
-- API layer: FastAPI routes and worker entry points
-- Orchestration: LangGraph-style state and graph planning helpers
-- Agents: discovery, crawler, normalization, entities, macro, cross-asset, sectors, technicals, flows, politicians, synthesis, verification
-- Storage: Postgres, Redis, Qdrant, MinIO, OpenSearch
-- Local models: Ollama + embeddings for offline-friendly experimentation
+Useful next work: source-retrieval receipts with content hashes, claim-to-passage links, evaluated extraction, and a public frontend backed by real contracts. Keep fixtures synthetic and make evaluation limits explicit.
 
-## Notes for contributors
-
-- All timestamps are recorded in PT.
-- The verifier includes a double-source rule and warnings for missing corroboration.
-- The workflow is intentionally modular so each agent/tool can be upgraded incrementally.
-
-## Contributing
-
-Contributions are welcome. Please open an issue first for larger changes, then submit a pull request with a clear summary and test evidence.
-
-## License
-
-This project is released under the MIT License. See [LICENSE](LICENSE) for details.
+See [Contributing](CONTRIBUTING.md) and the existing [MIT license](LICENSE). Research and engineering demo only; not an investment product or live-trading system.

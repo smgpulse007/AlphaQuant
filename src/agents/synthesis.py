@@ -47,7 +47,7 @@ def run(state: Dict[str, Any]) -> Dict[str, Any]:
         "regime": {"tag": "Range", "notes": "Stub regime classifier"},
         "market_scan": market_scan,
         "trades": trades,
-        "audit": {"double_source": False, "all_timestamps_pt": True},
+        "audit": {"double_source": False, "all_timestamps_pt": False},
     }
     return state
 
